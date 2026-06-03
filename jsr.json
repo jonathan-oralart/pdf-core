@@ -1,0 +1,14 @@
+{
+  "name": "@oralart/pdf-core",
+  "version": "0.1.0",
+  "license": "MIT",
+  "exports": "./src/index.ts",
+  "publish": {
+    "include": ["src/**/*.ts", "README.md", "LICENSE"]
+  },
+  "imports": {
+    "dayjs": "npm:dayjs@^1.11.19",
+    "dayjs/plugin/utc.js": "npm:dayjs@^1.11.19/plugin/utc.js",
+    "dayjs/plugin/timezone.js": "npm:dayjs@^1.11.19/plugin/timezone.js"
+  }
+}
