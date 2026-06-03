@@ -42,6 +42,7 @@ export interface CaseData {
     doctorPreferences: string[];
     courierInfo: string;
     remakeStatus: string; // "[R]", "[A]", or ""
+    caseFlag?: number | string | null;
     caseFlagMsg: string;
     createdDate: string; // ISO 8601
 }

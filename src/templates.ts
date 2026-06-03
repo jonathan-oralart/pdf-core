@@ -22,6 +22,30 @@ const BARCODE_SCRIPTS = `
   });
 </script>`;
 
+const CASE_FLAG_MESSAGES = {
+    urgent: "Urgent Case",
+    missingInfo: "Photos/email missing at entry",
+    placeholderDate: "Placeholder date (not real)",
+} as const;
+
+function normalizeCaseFlagMsg(data: CaseData): string {
+    const existingMessage = typeof data.caseFlagMsg === "string"
+        ? data.caseFlagMsg.trim()
+        : "";
+    if (existingMessage) return existingMessage;
+
+    switch (Number(data.caseFlag)) {
+        case 10:
+            return CASE_FLAG_MESSAGES.urgent;
+        case 30:
+            return CASE_FLAG_MESSAGES.missingInfo;
+        case 50:
+            return CASE_FLAG_MESSAGES.placeholderDate;
+        default:
+            return "";
+    }
+}
+
 // Barcode placeholder SVG
 function barcodeSvg(
     value: string,
@@ -82,6 +106,7 @@ function generateZirconiaSection(data: CaseData): string {
 export function generateWorkTicketHTML(data: CaseData): string {
     const dueDateTime = formatDueDate(data.rawDueDate);
     const headerBarcode = barcodeSvg(data.barcode, { width: 1, height: 25 });
+    const caseFlagMsg = normalizeCaseFlagMsg(data);
 
     return `<!DOCTYPE html>
 <html>
@@ -142,14 +167,16 @@ export function generateWorkTicketHTML(data: CaseData): string {
         .send-for-approval-section strong { font-size: 16px; }
         .urgent-banner { background-color: #dc143c; color: white; text-align: center; font-size: 32px; font-weight: bold; padding: 10px; margin-bottom: 15px; break-inside: avoid; }
         .missing-info-banner { background-color: #f5c518; color: black; text-align: center; font-size: 16px; font-weight: bold; padding: 5px; margin-bottom: 15px; break-inside: avoid; }
+        .placeholder-date-banner { background-color: #2f80ed; color: white; text-align: center; font-size: 20px; font-weight: bold; padding: 8px; margin-bottom: 15px; break-inside: avoid; }
         .check-case-entry-banner { background-color: #9874D3; color: white; text-align: center; font-size: 16px; font-weight: bold; padding: 5px; margin-bottom: 15px; break-inside: avoid; }
     </style>
 </head>
 <body>
     <div class="page-container">
         <div class="content-columns">
-            ${data.caseFlagMsg === "Urgent Case" ? '<div class="content-section urgent-banner">URGENT</div>' : ""}
-            ${data.caseFlagMsg === "Photos/email missing at entry" ? '<div class="content-section missing-info-banner">Missing Information</div>' : ""}
+            ${caseFlagMsg === CASE_FLAG_MESSAGES.urgent ? '<div class="content-section urgent-banner">URGENT</div>' : ""}
+            ${caseFlagMsg === CASE_FLAG_MESSAGES.missingInfo ? '<div class="content-section missing-info-banner">Missing Information</div>' : ""}
+            ${caseFlagMsg === CASE_FLAG_MESSAGES.placeholderDate ? '<div class="content-section placeholder-date-banner">Placeholder date (not real)</div>' : ""}
             ${data.caseItems.some((item) => item.item.includes("[A] Check Case Entry")) ? '<div class="content-section check-case-entry-banner">Check Case Entry</div>' : ""}
             <div class="content-section header-section-top">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-right: 10px">
