@@ -75,15 +75,15 @@ npx jsr publish --dry-run
 npx jsr publish             # requires @oralart scope membership on jsr.io
 ```
 
-### Preview templates with captured fixtures
+### Preview templates with captured data
 
-In this repo, fixture data captured from `raycast_lms` lives in
-`fixtures/pdf-core`. To regenerate HTML previews after editing a template:
+In this repo, preview data captured from `raycast_lms` lives in
+`preview-data/pdf-core`. To regenerate HTML previews after editing a template:
 
 ```bash
-deno task preview # writes .preview/pdf-core/*.html and regenerates on changes
+deno task preview # writes previews/pdf-core/*.html and regenerates on changes
 ```
 
-The generated preview files are ignored by git. The captured fixtures may
+The generated preview files are ignored by git. The captured preview data may
 contain real LMS case data, so keep them private; they are intentionally
 excluded from JSR publishes.

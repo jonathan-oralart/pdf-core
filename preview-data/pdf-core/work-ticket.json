@@ -1,5 +1,5 @@
 {
-  "fixtureVersion": 1,
+  "previewDataVersion": 1,
   "source": "raycast_lms_anonymized",
   "capturedAt": "2026-02-01T00:00:00.000Z",
   "pdfType": "workTicket",
@@ -26,6 +26,55 @@
         "toothNum": "11",
         "item": "Zirconia Crown",
         "shade": "A2"
+      },
+      {
+        "type": "Crown",
+        "colour": "Zirconia",
+        "toothNum": "12",
+        "item": "Zirconia Crown",
+        "shade": "A2"
+      },
+      {
+        "type": "Crown",
+        "colour": "Zirconia",
+        "toothNum": "13",
+        "item": "Zirconia Crown",
+        "shade": "A2"
+      },
+      {
+        "type": "Crown",
+        "colour": "Zirconia",
+        "toothNum": "15",
+        "item": "Zirconia Crown",
+        "shade": "A2"
+      },
+      {
+        "type": "Crown",
+        "colour": "Zirconia",
+        "toothNum": "21",
+        "item": "Zirconia Crown",
+        "shade": "A2"
+      },
+      {
+        "type": "Crown",
+        "colour": "Zirconia",
+        "toothNum": "22",
+        "item": "Zirconia Crown",
+        "shade": "A2"
+      },
+      {
+        "type": "Crown",
+        "colour": "Zirconia",
+        "toothNum": "23",
+        "item": "Zirconia Crown",
+        "shade": "A3"
+      },
+      {
+        "type": "Denture",
+        "colour": "",
+        "toothNum": "Upper & Lower",
+        "item": "Full Denture",
+        "shade": "No Shade"
       }
     ],
     "comments": "Synthetic comment.",

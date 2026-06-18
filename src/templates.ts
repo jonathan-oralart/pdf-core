@@ -103,22 +103,121 @@ function generateZirconiaSection(data: CaseData): string {
 // Work Ticket (A4 landscape, 297x210mm)
 // ---------------------------------------------------------------------------
 
+interface WorkTicketItemRow {
+    toothNums: string[];
+    item: string;
+    shade: string;
+}
+
+function formatWorkTicketShade(shade: string): string {
+    return shade === "No Shade" ? "-" : shade;
+}
+
+function formatWorkTicketToothNum(toothNum: string): string {
+    return toothNum === "Upper & Lower" ? "U&L" : toothNum;
+}
+
+function isFdiToothNumber(value: string): boolean {
+    const toothNum = parseInt(value, 10);
+    return !isNaN(toothNum) &&
+        String(toothNum) === value &&
+        toothNum >= 11 &&
+        toothNum <= 85 &&
+        toothNum % 10 >= 1 &&
+        toothNum % 10 <= 8;
+}
+
+function compressToothNumbers(toothNums: string[]): string {
+    const numeric: number[] = [];
+    const nonNumeric: string[] = [];
+
+    for (const toothNum of toothNums) {
+        const trimmed = toothNum.trim();
+        if (!trimmed) continue;
+
+        if (isFdiToothNumber(trimmed)) {
+            numeric.push(parseInt(trimmed, 10));
+        } else {
+            nonNumeric.push(trimmed);
+        }
+    }
+
+    if (numeric.length === 0) return nonNumeric.join(", ");
+
+    const ranges: string[] = [];
+    const unique = [...new Set(numeric)].sort((a, b) => a - b);
+    let start = unique[0];
+    let previous = unique[0];
+
+    for (let i = 1; i < unique.length; i++) {
+        const current = unique[i];
+        if (
+            Math.floor(current / 10) === Math.floor(previous / 10) &&
+            current === previous + 1
+        ) {
+            previous = current;
+        } else {
+            ranges.push(
+                start === previous ? String(start) : `${start}-${previous}`,
+            );
+            start = current;
+            previous = current;
+        }
+    }
+
+    ranges.push(start === previous ? String(start) : `${start}-${previous}`);
+
+    return [...ranges, ...nonNumeric].join(", ");
+}
+
+function workTicketItemRows(data: CaseData): WorkTicketItemRow[] {
+    const rows: WorkTicketItemRow[] = [];
+    const rowIndexByKey = new Map<string, number>();
+
+    for (const item of data.caseItems) {
+        const row = {
+            toothNums: [formatWorkTicketToothNum(item.toothNum)],
+            item: item.item,
+            shade: formatWorkTicketShade(item.shade),
+        };
+        const key = `${row.item}\x00${row.shade}`;
+        const existingIndex = rowIndexByKey.get(key);
+
+        if (existingIndex === undefined) {
+            rowIndexByKey.set(key, rows.length);
+            rows.push(row);
+        } else {
+            rows[existingIndex].toothNums.push(...row.toothNums);
+        }
+    }
+
+    return rows;
+}
+
 export function generateWorkTicketHTML(data: CaseData): string {
     const dueDateTime = formatDueDate(data.rawDueDate);
     const headerBarcode = barcodeSvg(data.barcode, { width: 1, height: 25 });
     const caseFlagMsg = normalizeCaseFlagMsg(data);
+    const itemRows = workTicketItemRows(data);
 
     return `<!DOCTYPE html>
 <html>
 <head>
     <title>Lab Sheet - ${data.patientName}</title>
     <style>
-        body { 
+        * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; box-sizing: border-box; }
+        html { margin: 0; padding: 20px; min-height: 100vh; background: #525659; }
+        body {
+            margin: 0 auto;
+            padding: 0.5cm;
+            width: 297mm;
+            height: 210mm;
+            overflow: hidden;
             font-family: Arial, sans-serif;
-            box-sizing: border-box;
-            padding: 0px;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
-        .page-container { width: 100%; margin: 0 auto; overflow: visible; }
+        .page-container { width: 100%; height: 100%; margin: 0 auto; overflow: visible; }
         .header-section-top { margin-bottom: 20px; position: relative; min-height: 58px; }
         .work-ticket-header { display: flex; justify-content: space-between; align-items: flex-start; margin-right: 10px; padding-right: 125px; }
         .header-pan { flex-shrink: 0; }
@@ -145,7 +244,10 @@ export function generateWorkTicketHTML(data: CaseData): string {
         .schedule-table tr { border-bottom: 1px solid #e0e0e0; }
         .schedule-table td { padding: 4px 8px; vertical-align: top; line-height: 1; }
         @page { margin: 0.5cm; size: A4 landscape; }
-        body { print-color-adjust: exact; margin: 0; }
+        @media print {
+            html { padding: 0; background: none; }
+            body { margin: 0; padding: 0; width: auto; height: auto; overflow: visible; box-shadow: none; }
+        }
         .page-container { max-width: none; width: 100%; min-height: auto; }
         .comments-box { margin-bottom: 20px; }
         .comments-box h3 { margin-bottom: 0; }
@@ -238,13 +340,13 @@ export function generateWorkTicketHTML(data: CaseData): string {
                         </tr>
                     </thead>
                     <tbody>
-                        ${data.caseItems
+                        ${itemRows
                             .map(
-                                (item) => `
+                                (row) => `
                             <tr>
-                                <td>${item.toothNum}</td>
-                                <td>${item.item}</td>
-                                <td>${item.shade}</td>
+                                <td>${compressToothNumbers(row.toothNums)}</td>
+                                <td>${row.item}</td>
+                                <td>${row.shade}</td>
                             </tr>`,
                             )
                             .join("")}
@@ -372,8 +474,11 @@ export function generateLabelHTML(data: CaseData): string {
 <html>
 <head>
     <style>
-        * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-        body { margin: 0; padding: 0px 10px; font-family: monospace; max-width: 96mm; }
+        * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; box-sizing: border-box; }
+        html { margin: 0; padding: 20px; min-height: 100vh; background: #525659; }
+        body { margin: 0 auto; padding: 0 10px; width: 100mm; height: 61mm; overflow: hidden; font-family: monospace; display: flex; flex-direction: column; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+        @media print { html { padding: 0; background: none; } body { box-shadow: none; } }
+        @page { size: 100mm 61mm; margin: 0; }
         .header { display: flex; align-items: stretch; margin-bottom: 2px; height: 25px; }
         .patient-name-box { background: #000; color: #fff; line-height: 25px; display: flex; align-items: flex-start; font-size: 15px; font-weight: bold; flex: 1; margin-right: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-left: 4px }
         .barcode-box { display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
@@ -385,7 +490,7 @@ export function generateLabelHTML(data: CaseData): string {
         .right { text-align: right; white-space: nowrap; flex: 1; }
     </style>
 </head>
-<body style="height: 100vh; box-sizing: border-box; display: flex; flex-direction: column;">
+<body>
     <div class="header">
         <div class="patient-name-box">${data.patientName}</div>
         <div class="barcode-box">${headerBarcode}</div>

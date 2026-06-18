@@ -6,9 +6,9 @@ import {
   generateWorkTicketHTML,
 } from "../src/index.ts";
 
-const fixtureDir = "fixtures/pdf-core";
-const outputDir = ".preview/pdf-core";
-const fixtures = [
+const previewDataDir = "preview-data/pdf-core";
+const outputDir = "previews/pdf-core";
+const previewData = [
   ["work-ticket", generateWorkTicketHTML],
   ["label", generateLabelHTML],
   ["address-label", generateAddressLabelHTML],
@@ -18,9 +18,9 @@ const fixtures = [
 await Deno.mkdir(outputDir, { recursive: true });
 
 await Promise.all(
-  fixtures.map(async ([name, render]) => {
+  previewData.map(async ([name, render]) => {
     const htmlFile = `${name}.html`;
-    const json = await Deno.readTextFile(join(fixtureDir, `${name}.json`));
+    const json = await Deno.readTextFile(join(previewDataDir, `${name}.json`));
     await Deno.writeTextFile(
       join(outputDir, htmlFile),
       render(JSON.parse(json).caseData),
@@ -28,5 +28,5 @@ await Promise.all(
   }),
 );
 
-console.log(`Rendered ${fixtures.length} fixture preview(s).`);
+console.log(`Rendered ${previewData.length} preview(s).`);
 console.log(`Open ${join(Deno.cwd(), outputDir)}`);
