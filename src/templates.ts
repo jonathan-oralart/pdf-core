@@ -121,6 +121,7 @@ export function generateWorkTicketHTML(data: CaseData): string {
         .page-container { width: 100%; margin: 0 auto; overflow: visible; }
         .header-section-top { margin-bottom: 20px; position: relative; min-height: 58px; }
         .work-ticket-header { display: flex; justify-content: space-between; align-items: flex-start; margin-right: 10px; padding-right: 125px; }
+        .header-pan { flex-shrink: 0; }
         .content-columns { column-count: 3; column-gap: 20px; column-fill: auto; height: 100%; }
         .content-section { margin-bottom: 20px; }
         .header-section { text-align: left; }
@@ -128,7 +129,7 @@ export function generateWorkTicketHTML(data: CaseData): string {
         .header-section.right { text-align: right; }
         .company-name { font-size: 11px; font-weight: bold; margin-bottom: 0; }
         .courier-text { font-size: 11px; font-weight: bold; margin-bottom: 5px; }
-        .pan-number { font-size: 24px; font-weight: bold; }
+        .pan-number { font-size: 24px; font-weight: bold; white-space: nowrap; }
         .due-date-box { background: #000; color: #fff; padding: 8px; text-align: center; width: 94px; z-index: 1; }
         .header-date-box { position: absolute; top: 0; right: 10px; }
         .due-date-day { font-size: 54px; font-weight: bold; line-height: 1; margin-bottom: 6px; }
@@ -184,7 +185,7 @@ export function generateWorkTicketHTML(data: CaseData): string {
                         <div class="company-name">${data.clientInfo}</div>
                         ${headerBarcode}
                     </div>
-                    <div>
+                    <div class="header-pan">
                         <div class="courier-text">${data.courierInfo || "No Courier Specified"}</div>
                         <div class="pan-number">${data.panNum}</div>
                     </div>
