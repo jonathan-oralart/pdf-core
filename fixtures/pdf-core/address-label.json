@@ -1,0 +1,140 @@
+{
+  "fixtureVersion": 1,
+  "source": "raycast_lms_anonymized",
+  "capturedAt": "2026-02-01T00:00:00.000Z",
+  "pdfType": "addressLabel",
+  "caseData": {
+    "patientFirstName": "Avery",
+    "patientLastName": "Taylor",
+    "patientName": "Taylor, Avery",
+    "panNum": "PAN-1001",
+    "barcode": "90000001",
+    "clientInfo": "Example Dental Studio",
+    "clientName": "Example Dental Studio",
+    "clientAddr1": "123 Sample Street",
+    "clientAddr2": "Suite 4",
+    "clientAddr3": "",
+    "clientCity": "Auckland",
+    "clientZip": "1010",
+    "appointmentDate": "2026-02-18T14:30:00.000Z",
+    "doctorName": "Morgan, Casey",
+    "phone": "09 555 0100",
+    "caseItems": [
+      {
+        "type": "Crown",
+        "colour": "Zirconia",
+        "toothNum": "11",
+        "item": "Zirconia Crown",
+        "shade": "A2"
+      }
+    ],
+    "comments": "Synthetic comment.",
+    "productionLog": [
+      {
+        "date": "02/02",
+        "rawDate": "2026-02-02T00:00:00.000Z",
+        "step": "Case Entry",
+        "tech": "Tech A",
+        "completedTech": "",
+        "completedDate": "N/A"
+      },
+      {
+        "date": "03/02",
+        "rawDate": "2026-02-03T00:00:00.000Z",
+        "step": "Model Work",
+        "tech": "Tech B",
+        "completedTech": "",
+        "completedDate": "N/A"
+      },
+      {
+        "date": "04/02",
+        "rawDate": "2026-02-04T00:00:00.000Z",
+        "step": "CAD Design",
+        "tech": "Tech C",
+        "completedTech": "",
+        "completedDate": "N/A"
+      },
+      {
+        "date": "05/02",
+        "rawDate": "2026-02-05T00:00:00.000Z",
+        "step": "Mill",
+        "tech": "Tech D",
+        "completedTech": "",
+        "completedDate": "N/A"
+      },
+      {
+        "date": "06/02",
+        "rawDate": "2026-02-06T00:00:00.000Z",
+        "step": "Sinter",
+        "tech": "Tech E",
+        "completedTech": "",
+        "completedDate": "N/A"
+      },
+      {
+        "date": "07/02",
+        "rawDate": "2026-02-07T00:00:00.000Z",
+        "step": "Stain, glaze & fit",
+        "tech": "Tech F",
+        "completedTech": "",
+        "completedDate": "N/A"
+      },
+      {
+        "date": "08/02",
+        "rawDate": "2026-02-08T00:00:00.000Z",
+        "step": "Quality Control",
+        "tech": "Tech G",
+        "completedTech": "",
+        "completedDate": "N/A"
+      },
+      {
+        "date": "09/02",
+        "rawDate": "2026-02-09T00:00:00.000Z",
+        "step": "Final Fit",
+        "tech": "Tech H",
+        "completedTech": "",
+        "completedDate": "N/A"
+      },
+      {
+        "date": "10/02",
+        "rawDate": "2026-02-10T00:00:00.000Z",
+        "step": "Admin Review",
+        "tech": "Tech I",
+        "completedTech": "",
+        "completedDate": "N/A"
+      },
+      {
+        "date": "11/02",
+        "rawDate": "2026-02-11T00:00:00.000Z",
+        "step": "Ready for Dispatch",
+        "tech": "Tech J",
+        "completedTech": "",
+        "completedDate": "N/A"
+      },
+      {
+        "date": "12/02",
+        "rawDate": "2026-02-12T00:00:00.000Z",
+        "step": "Pack Case",
+        "tech": "Tech K",
+        "completedTech": "",
+        "completedDate": "N/A"
+      },
+      {
+        "date": "13/02",
+        "rawDate": "2026-02-13T00:00:00.000Z",
+        "step": "Dispatch",
+        "tech": "Tech L",
+        "completedTech": "",
+        "completedDate": "N/A"
+      }
+    ],
+    "dueDate": "12/02",
+    "rawDueDate": "2026-02-12T00:00:00.000Z",
+    "shipDate": "11/02",
+    "doctorPreferences": [],
+    "courierInfo": "Example Courier",
+    "remakeStatus": "",
+    "caseFlag": null,
+    "caseFlagMsg": "",
+    "createdDate": "2026-01-28T22:15:00.000Z"
+  }
+}

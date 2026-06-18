@@ -10,5 +10,9 @@
     "dayjs": "npm:dayjs@^1.11.19",
     "dayjs/plugin/utc.js": "npm:dayjs@^1.11.19/plugin/utc.js",
     "dayjs/plugin/timezone.js": "npm:dayjs@^1.11.19/plugin/timezone.js"
+  },
+  "tasks": {
+    "check": "deno check src/**/*.ts scripts/**/*.ts",
+    "preview": "deno run --watch=src,fixtures/pdf-core --allow-read --allow-write scripts/render-fixtures.ts"
   }
 }

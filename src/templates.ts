@@ -119,18 +119,18 @@ export function generateWorkTicketHTML(data: CaseData): string {
             padding: 0px;
         }
         .page-container { width: 100%; margin: 0 auto; overflow: visible; }
-        .header-section-top { margin-bottom: 20px; }
+        .header-section-top { margin-bottom: 20px; position: relative; min-height: 58px; }
+        .work-ticket-header { display: flex; justify-content: space-between; align-items: flex-start; margin-right: 10px; padding-right: 125px; }
         .content-columns { column-count: 3; column-gap: 20px; column-fill: auto; height: 100%; }
         .content-section { margin-bottom: 20px; }
         .header-section { text-align: left; }
         .header-section.center { text-align: center; }
         .header-section.right { text-align: right; }
         .company-name { font-size: 11px; font-weight: bold; margin-bottom: 0; }
-        .courier-text, .pan-label { font-size: 11px; font-weight: bold; margin-bottom: 5px; }
-        .barcode-number { font-weight: bold; font-size: 24px; }
-        .pan-container { display: flex; flex-direction: column; }
+        .courier-text { font-size: 11px; font-weight: bold; margin-bottom: 5px; }
         .pan-number { font-size: 24px; font-weight: bold; }
-        .due-date-box { background: #000; color: #fff; padding: 8px; text-align: center; width: 94px; z-index: 1; float: right; margin-left: 10px; }
+        .due-date-box { background: #000; color: #fff; padding: 8px; text-align: center; width: 94px; z-index: 1; }
+        .header-date-box { position: absolute; top: 0; right: 10px; }
         .due-date-day { font-size: 54px; font-weight: bold; line-height: 1; margin-bottom: 6px; }
         .due-date-rest { font-size: 16px; line-height: 1.2; }
         .info-label { font-size: 12px; color: #666; }
@@ -179,27 +179,23 @@ export function generateWorkTicketHTML(data: CaseData): string {
             ${caseFlagMsg === CASE_FLAG_MESSAGES.placeholderDate ? '<div class="content-section placeholder-date-banner">Placeholder date (not real)</div>' : ""}
             ${data.caseItems.some((item) => item.item.includes("[A] Check Case Entry")) ? '<div class="content-section check-case-entry-banner">Check Case Entry</div>' : ""}
             <div class="content-section header-section-top">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-right: 10px">
+                <div class="work-ticket-header">
                     <div>
                         <div class="company-name">${data.clientInfo}</div>
                         ${headerBarcode}
                     </div>
                     <div>
                         <div class="courier-text">${data.courierInfo || "No Courier Specified"}</div>
-                        <div class="barcode-number">${data.barcode}</div>
-                    </div>
-                    <div style="margin-left: 10px;">
-                        <div class="pan-label">Pan #</div>
                         <div class="pan-number">${data.panNum}</div>
                     </div>
+                </div>
+                <div class="due-date-box header-date-box">
+                    <div class="due-date-day">${dueDateTime.day}</div>
+                    <div class="due-date-rest">${dueDateTime.rest}</div>
                 </div>
             </div>
 
             <div class="content-section doctor-patient-info">
-                <div class="due-date-box">
-                    <div class="due-date-day">${dueDateTime.day}</div>
-                    <div class="due-date-rest">${dueDateTime.rest}</div>
-                </div>
                 <div class="doctor-info">
                     <div class="info-label">Doctor</div>
                     <div class="info-value">${data.doctorName}</div>
