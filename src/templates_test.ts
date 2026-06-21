@@ -116,3 +116,18 @@ Deno.test("work ticket tooth ranges do not cross quadrants", () => {
 
     assertEquals(workTicketRows(html), [["18, 21", "Zirconia Crown", "A2"]]);
 });
+
+Deno.test("work ticket tolerates items without tooth numbers", () => {
+    const html = generateWorkTicketHTML(
+        makeCaseData([
+            {
+                type: "",
+                colour: "",
+                item: "(1) Model Printed - Hollow",
+                shade: "",
+            },
+        ]),
+    );
+
+    assertEquals(workTicketRows(html), [["", "(1) Model Printed - Hollow", ""]]);
+});

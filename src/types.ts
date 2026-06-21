@@ -3,7 +3,7 @@
 export interface CaseItem {
     type: string;
     colour: string;
-    toothNum: string;
+    toothNum?: string;
     item: string;
     shade: string;
 }

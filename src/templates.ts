@@ -113,7 +113,8 @@ function formatWorkTicketShade(shade: string): string {
     return shade === "No Shade" ? "-" : shade;
 }
 
-function formatWorkTicketToothNum(toothNum: string): string {
+function formatWorkTicketToothNum(toothNum: string | null | undefined): string {
+    if (!toothNum) return "";
     return toothNum === "Upper & Lower" ? "U&L" : toothNum;
 }
 
